@@ -1,7 +1,7 @@
 #ifndef APPLICATION_H
 #define APPLICATION_H
 
-#include <bobcat_ui/all.h>
+#include "../bobcat_ui/all.h"
 #include "Toolbar.h"
 #include "Canvas.h"
 #include "ColorSelector.h"

@@ -1,7 +1,7 @@
 #ifndef COLOR_SELECTOR_H
 #define COLOR_SELECTOR_H
 
-#include <bobcat_ui/all.h>
+#include "../bobcat_ui/all.h"
 #include "Enums.h"
 #include <iostream>
 

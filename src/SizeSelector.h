@@ -1,7 +1,7 @@
 #ifndef SIZE_SELECTOR_H
 #define SIZE_SELECTOR_H
 
-#include <bobcat_ui/all.h>
+#include "../bobcat_ui/all.h"
 #include <iostream>
 #include "Enums.h"
 

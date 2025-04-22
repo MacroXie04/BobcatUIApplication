@@ -1,7 +1,7 @@
 #ifndef TOOLBAR_H
 #define TOOLBAR_H
 
-#include <bobcat_ui/all.h>
+#include "../bobcat_ui/all.h"
 #include "Enums.h"
 
 class Toolbar : public bobcat::Group {

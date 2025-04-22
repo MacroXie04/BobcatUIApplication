@@ -1,7 +1,7 @@
 #ifndef CANVAS_H
 #define CANVAS_H
 
-#include <bobcat_ui/all.h>
+#include "../bobcat_ui/all.h"
 #include <vector>
 #include "Print_obj.h"
 

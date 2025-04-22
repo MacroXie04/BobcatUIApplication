@@ -29,7 +29,7 @@ class HexagonButton: public Fl_Button{
         onLeaveCb = nullptr;
     }
 
-    int handle(int event) {
+    int handle(int event) override {
         int ret = Fl_Button::handle(event);
 
         if (event == FL_ENTER){

@@ -6,7 +6,7 @@
 #include <FL/Enumerations.H>
 #include <FL/Fl_Gl_Window.H>
 #include <FL/Fl_PNG_Image.H>
-#include <GL/gl.h>
+#include <OpenGL/gl.h>
 
 #include <string>
 #include <functional>

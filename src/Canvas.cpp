@@ -1,5 +1,4 @@
 #include "Canvas.h"
-#include <GL/freeglut.h>
 #include <cmath>
 
 Canvas::Canvas(int x,int y,int w,int h):Canvas_(x,y,w,h){
@@ -93,7 +92,11 @@ void Canvas::bringSelectedToFront(){
 }
 
 void Canvas::render(){
-    glClear(GL_COLOR_BUFFER_BIT);
+    if (!valid()) {
+        glViewport(0, 0, w(), h());
+    }
+    glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     float wpx=(float)w(),hpx=(float)h(),aspect=wpx/hpx;
     for(size_t idx=0;idx<prints.size();++idx){
         auto&p=prints[idx];
@@ -168,4 +171,5 @@ void Canvas::render(){
         }
     }
     glFlush();
+    swap_buffers();
 }

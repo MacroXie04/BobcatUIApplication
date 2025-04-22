@@ -1,6 +1,6 @@
 # ========================================================================================= #
 #  Bobcat UI Application Makefile      														#
-#  Angelo Kyrilov                      														#
+#  Hongzhe Xie                      														#
 #  University of California, Merced    												   		#
 # ========================================================================================= #
 
@@ -18,11 +18,11 @@ TEST = test
 
 # =================================== COMPILER SETTINGS =================================== #
 
-CXX = g++
+CXX = clang++
 
-CXXFLAGS = -Wall
-LDFLAGS = -lfltk_images -lpng -lz -lfltk_gl -lGLU -lGL -lfltk -lXrender \
-          -lXext -lXft -lfontconfig -lpthread -ldl -lm -lX11
+CXXFLAGS = -Wall `fltk-config --cxxflags` -std=c++17 -DGL_SILENCE_DEPRECATION
+LDFLAGS = `fltk-config --ldflags` -lfltk_gl -lfltk_images -framework OpenGL
+
 
 # ==================================== OTHER SETTINGS ===================================== #
 
