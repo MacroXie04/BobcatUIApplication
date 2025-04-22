@@ -43,6 +43,14 @@ Note: A "scribble" is defined as a set of points drawn during a single mouse-dra
 - C++17 or later
 - FLTK with OpenGL support
 
+### macOS (Homebrew)
+
+On macOS with Homebrew, install the following packages:
+
+```bash
+brew install fltk
+```
+
 ### Build
 
 Use the provided Makefile, or run:
