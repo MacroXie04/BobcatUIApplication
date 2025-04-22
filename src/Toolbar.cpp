@@ -7,7 +7,6 @@
 using namespace bobcat;
 
 void Toolbar::visualizeSelectedTool() {
-
     // deselect all tools
     mouseButton->color(FL_BACKGROUND_COLOR);
     pencilButton->color(FL_BACKGROUND_COLOR);
@@ -39,10 +38,10 @@ void Toolbar::visualizeSelectedTool() {
         rectangleButton->color(FL_WHITE);
     } else if (tool == POLYGON) {
         polygonButton->color(FL_WHITE);
-    } 
+    }
 }
 
-void Toolbar::onClick(bobcat::Widget* sender) {
+void Toolbar::onClick(bobcat::Widget *sender) {
     action = NONE;
 
     if (sender == mouseButton) {
@@ -91,20 +90,20 @@ Toolbar::Toolbar(int x, int y, int w, int h) : Group(x, y, w, h) {
     mouseButton = new Image(x, yOffset, btnWidth, btnHeight, "./assets/mouse.png");
     pencilButton = new Image(x, yOffset += spacing, btnWidth, btnHeight, "./assets/pencil.png");
     eraserButton = new Image(x, yOffset += spacing, btnWidth, btnHeight, "./assets/eraser.png");
-    
+
     //
     circleButton = new Image(x, yOffset += spacing, btnWidth, btnHeight, "./assets/circle.png");
     triangleButton = new Image(x, yOffset += spacing, btnWidth, btnHeight, "./assets/triangle.png");
     rectangleButton = new Image(x, yOffset += spacing, btnWidth, btnHeight, "./assets/rectangle.png");
     polygonButton = new Image(x, yOffset += spacing, btnWidth, btnHeight, "./assets/polygon.png");
-    
+
     //
     sendToBackButton = new Image(x, yOffset += spacing, btnWidth, btnHeight, "./assets/send-to-back.png");
     bringToFrontButton = new Image(x, yOffset += spacing, btnWidth, btnHeight, "./assets/bring-to-front.png");
 
     // 
     clearButton = new Image(x, yOffset += spacing, btnWidth, btnHeight, "./assets/clear.png");
-    
+
     tool = PENCIL;
     action = NONE;
 
@@ -123,7 +122,7 @@ Toolbar::Toolbar(int x, int y, int w, int h) : Group(x, y, w, h) {
     clearButton->box(FL_BORDER_BOX);
 
     visualizeSelectedTool();
-    
+
     ON_CLICK(pencilButton, Toolbar::onClick);
     ON_CLICK(eraserButton, Toolbar::onClick);
     ON_CLICK(circleButton, Toolbar::onClick);
