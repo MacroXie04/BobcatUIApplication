@@ -5,7 +5,6 @@
 bool DEBUG = false;
 
 int main() {
-
     // DEBUG Control
     DEBUG = true;
     if (DEBUG) {

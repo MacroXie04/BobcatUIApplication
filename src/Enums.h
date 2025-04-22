@@ -7,7 +7,7 @@ enum TOOL {
     MOUSE,
     PENCIL,
     ERASER,
-    
+
     CIRCLE,
     TRIANGLE,
     RECTANGLE,
@@ -17,7 +17,7 @@ enum TOOL {
 enum ACTION {
     NONE,
     CLEAR,
-    SEND_TO_BACK,    
+    SEND_TO_BACK,
     BRING_TO_FRONT,
 };
 

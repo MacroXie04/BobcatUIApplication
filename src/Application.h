@@ -8,18 +8,31 @@
 #include "SizeSelector.h"
 
 
-class Application:public bobcat::Application_{
-    bobcat::Window* window;Toolbar* toolbar;Canvas* canvas;
-    ColorSelector* colorSelector;SizeSelector* sizeSelector;
-    float lastX,lastY;bool dragging;
-    void onCanvasMouseDown(bobcat::Widget* sender,float mx,float my);
-    void onCanvasDrag(bobcat::Widget* sender,float mx,float my);
-    void onToolbarChange(bobcat::Widget* sender);
-    void onSizeChange(bobcat::Widget* sender);
-    void onColorChange(bobcat::Widget* sender);
+class Application : public bobcat::Application_ {
+    // data fields
+    bobcat::Window *window;
+    Toolbar *toolbar;
+    Canvas *canvas;
+    ColorSelector *colorSelector;
+    SizeSelector *sizeSelector;
+    float lastX, lastY;
+    bool dragging;
+
+    // event handlers
+    void onCanvasMouseDown(bobcat::Widget *sender, float mx, float my);
+
+    void onCanvasDrag(bobcat::Widget *sender, float mx, float my);
+
+    void onToolbarChange(bobcat::Widget *sender);
+
+    void onSizeChange(bobcat::Widget *sender);
+
+    void onColorChange(bobcat::Widget *sender);
+
 public:
     Application();
-    friend struct::AppTest;
+
+    // friend struct::AppTest;
 };
 
 #endif

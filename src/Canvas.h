@@ -5,25 +5,42 @@
 #include <vector>
 #include "Print_obj.h"
 
-class Canvas:public bobcat::Canvas_{
+class Canvas : public bobcat::Canvas_ {
+    // the vector to storage PrintObj(contain color, postion, tool)
     std::vector<PrintObj> prints;
+
+    //
     int active;
     int selected;
+
 public:
-    Canvas(int x,int y,int w,int h);
-    void startPrint(TOOL tool,float r,float g,float b,int size,float x,float y);
-    void addPointToActive(float x,float y);
-    void setLastPointActive(float x,float y);
-    void eraseAt(float x,float y);
+    Canvas(int x, int y, int w, int h);
+
+    void startPrint(TOOL tool, float r, float g, float b, int size, float x, float y);
+
+    void addPointToActive(float x, float y);
+
+    void setLastPointActive(float x, float y);
+
+    void eraseAt(float x, float y);
+
     void clear();
-    bool selectAt(float x,float y);
+
+    bool selectAt(float x, float y);
+
     void unselect();
-    bool hasSelected()const;
-    void moveSelectedBy(float dx,float dy);
-    PrintObj* getSelected();
+
+    bool hasSelected() const;
+
+    void moveSelectedBy(float dx, float dy);
+
+    PrintObj *getSelected();
+
     void sendSelectedToBack();
+
     void bringSelectedToFront();
-    void render()override;
+
+    void render() override;
 };
 
 #endif

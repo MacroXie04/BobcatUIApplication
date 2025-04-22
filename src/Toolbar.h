@@ -6,32 +6,37 @@
 
 class Toolbar : public bobcat::Group {
     // 
-    bobcat::Image* mouseButton;
-    bobcat::Image* pencilButton;
-    bobcat::Image* eraserButton;
+    bobcat::Image *mouseButton;
+    bobcat::Image *pencilButton;
+    bobcat::Image *eraserButton;
 
     // 
-    bobcat::Image* circleButton;
-    bobcat::Image* triangleButton;
-    bobcat::Image* rectangleButton;
-    bobcat::Image* polygonButton;
+    bobcat::Image *circleButton;
+    bobcat::Image *triangleButton;
+    bobcat::Image *rectangleButton;
+    bobcat::Image *polygonButton;
 
     //
-    bobcat::Image* sendToBackButton;
-    bobcat::Image* bringToFrontButton;
+    bobcat::Image *sendToBackButton;
+    bobcat::Image *bringToFrontButton;
 
     //
-    bobcat::Image* clearButton;
+    bobcat::Image *clearButton;
 
     TOOL tool;
     ACTION action;
+
     void deselectAllTools();
+
     void visualizeSelectedTool();
-    void onClick(bobcat::Widget* sender);
+
+    void onClick(bobcat::Widget *sender);
 
 public:
     Toolbar(int x, int y, int w, int h);
+
     TOOL getTool() const;
+
     ACTION getAction() const;
 };
 
