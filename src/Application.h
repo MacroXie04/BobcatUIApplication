@@ -7,6 +7,7 @@
 #include "ColorSelector.h"
 #include "SizeSelector.h"
 
+
 class Application:public bobcat::Application_{
     bobcat::Window* window;Toolbar* toolbar;Canvas* canvas;
     ColorSelector* colorSelector;SizeSelector* sizeSelector;

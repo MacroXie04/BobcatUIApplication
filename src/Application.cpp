@@ -4,32 +4,40 @@
 
 using namespace bobcat;
 
-void Application::onCanvasMouseDown(bobcat::Widget*, float mx, float my)
-{
+void Application::onCanvasMouseDown(bobcat::Widget*, float mx, float my) {
     TOOL t = toolbar->getTool();
-    if (t == ERASER) { canvas->eraseAt(mx, my); canvas->redraw(); return; }
+    if (t == ERASER) {
+        canvas->eraseAt(mx, my);
+        canvas->redraw();
+        return;
+    }
 
     if (t == MOUSE) {
-        bool sel = canvas->selectAt(mx, my);
-        dragging = sel;
+        bool hit = canvas->selectAt(mx, my);
+        dragging = hit;
 
-        if (sel) {                                   
-            auto* obj = canvas->getSelected();
+        if (hit) {
+            // only update UI on a true hit
+            auto *obj = canvas->getSelected();
             colorSelector->setColorRGB(obj->getR(), obj->getG(), obj->getB());
             sizeSelector->setSize(obj->getSize());
-            lastX = mx; lastY = my;
-        } else {                                    
-            canvas->unselect();                   
+            lastX = mx; 
+            lastY = my;
         }
+        // on miss: do nothing (selection remains as before)
+        // canvas->unselect();
 
         canvas->redraw();
         return;
     }
 
+    // all other tools start a new stroke
     auto [r, g, b] = colorSelector->getRGB();
     canvas->startPrint(t, r, g, b, sizeSelector->getSize(), mx, my);
     canvas->redraw();
 }
+
+
 
 
 void Application::onCanvasDrag(bobcat::Widget*,float mx,float my){

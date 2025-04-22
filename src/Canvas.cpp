@@ -3,7 +3,8 @@
 #include <cmath>
 
 Canvas::Canvas(int x,int y,int w,int h):Canvas_(x,y,w,h){
-    active=-1;selected=-1;
+    active=-1;
+    selected=-1;
 }
 
 void Canvas::startPrint(TOOL tool,float r,float g,float b,int size,float x,float y){
@@ -13,7 +14,12 @@ void Canvas::startPrint(TOOL tool,float r,float g,float b,int size,float x,float
     selected=-1;
 }
 
-void Canvas::addPointToActive(float x,float y){if(active>=0)prints[active].addPoint(x,y);}
+void Canvas::addPointToActive(float x,float y){
+    if(active>=0) {
+        prints[active].addPoint(x,y);
+    }
+
+}
 
 void Canvas::eraseAt(float x,float y){
     int hp=h();
@@ -37,12 +43,32 @@ void Canvas::clear(){prints.clear();active=-1;selected=-1;redraw();}
 
 void Canvas::setLastPointActive(float x,float y){if(active>=0)prints[active].setLastPoint(x,y);}
 
-bool Canvas::selectAt(float x,float y){
-    for(int i=(int)prints.size()-1;i>=0;--i)if(prints[i].hit(x,y)){selected=i;return true;}
-    selected=-1;return false;
+// === Canvas.cpp ===
+bool Canvas::selectAt(float x, float y) {
+    int hp = h();
+    // iterate from topmost (last‐drawn) backwards
+    for (int i = (int)prints.size() - 1; i >= 0; --i) {
+        // use the same threshold logic as eraseAt
+        float thr  = prints[i].getSize() * 2.0f / hp;
+        float thr2 = thr * thr;
+        for (auto &p : prints[i].getPoints()) {
+            float dx = p.x - x;
+            float dy = p.y - y;
+            if (dx*dx + dy*dy <= thr2) {
+                selected = i;
+                return true;
+            }
+        }
+    }
+    // miss → do not clear 'selected'
+    return false;
 }
 
-void Canvas::unselect(){selected=-1;}
+
+
+void Canvas::unselect(){
+    selected=-1;
+}
 
 bool Canvas::hasSelected()const{return selected!=-1;}
 
