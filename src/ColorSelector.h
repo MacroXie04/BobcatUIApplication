@@ -1,6 +1,10 @@
 #ifndef COLOR_SELECTOR_H
 #define COLOR_SELECTOR_H
 
+// if you are using steamplug environment please use this to load bobcat_ui
+// #include <bobcat_ui.h/all.h>
+
+// if you are using local environment please use this to load bobcat_ui
 #include "../bobcat_ui/all.h"
 #include "Enums.h"
 #include <iostream>
