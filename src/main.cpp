@@ -6,7 +6,7 @@ bool DEBUG = false;
 
 int main() {
     // DEBUG Control
-    DEBUG = true;
+    // DEBUG = true;
     if (DEBUG) {
         std::cout << "DEBUG ON" << std::endl;
     } else {
