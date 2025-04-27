@@ -124,7 +124,7 @@ void Application::onColorChange(bobcat::Widget *) {
 
 Application::Application() {
     // initialize the application and size of each window
-    window = new Window(20, 20, 700, 500, "Programming Project");
+    window = new bobcat::Window(20, 20, 700, 500, "Programming Project");
     toolbar = new Toolbar(0, 0, 50, 600);
     canvas = new Canvas(50, 0, 650, 450);
     colorSelector = new ColorSelector(50, 450, 350, 50);

@@ -8,19 +8,19 @@ This project was created to demonstrate interactive GUI programming, object-orie
 
 ## Features and Scoring
 
-| Feature                                                               | Points |
-|-----------------------------------------------------------------------|--------|
-| Paint Brush Tool — draw freeform scribbles (one drag = one object)   | 10     |
-| Eraser Tool — delete selected shape or scribble                      | 5      |
-| Clear Screen Tool — delete all shapes and scribbles                 | 5      |
-| RGB Color Picker — choose custom colors                             | 10     |
-| Four Shape Tools — e.g., Rectangle, Circle, Line, Triangle          | 10     |
-| Selector Tool — click to select any shape or scribble               | 10     |
-| Resize Tool — resize selected object interactively                   | 10     |
-| Color Change — change color of selected shape or scribble           | 10     |
-| Move Tool — drag to reposition selected shape or scribble           | 10     |
-| Bring to Front — reorder selected object to the front               | 10     |
-| Send to Back — reorder selected object to the back                  | 10     |
+| Feature                                                                               | Points |
+|---------------------------------------------------------------------------------------|--------|
+| Paint Brush Tool — draw freeform scribbles (one drag = one object)                    | 10     |
+| Eraser Tool — delete selected shape or scribble                                       | 5      |
+| Clear Screen Tool — delete all shapes and scribbles                                   | 5      |
+| RGB Color Picker — choose custom colors                                               | 10     |
+| Four Shape Tools — e.g., Rectangle, Circle, Line, Triangle                            | 10     |
+| Selector Tool — click to select any shape or scribble                                 | 10     |
+| Resize Tool — resize selected object interactively                                    | 10     |
+| Color Change — change color of selected shape or scribble                             | 10     |
+| Move Tool — drag to reposition selected shape or scribble                             | 10     |
+| Bring to Front — reorder selected object to the front                                 | 10     |
+| Send to Back — reorder selected object to the back                                    | 10     |
 
 **Total: 100 Points**
 
@@ -36,37 +36,6 @@ Note: A "scribble" is defined as a set of points drawn during a single mouse-dra
   - Points (`std::vector<Point>`)
 - Selection and editing operations modify objects directly within this container.
 
-## Build Instructions
-
-### Prerequisites
-
-- C++17 or later
-- FLTK with OpenGL support
-
-### macOS (Homebrew)
-
-On macOS with Homebrew, install the following packages:
-
-```bash
-brew install fltk
-```
-
-### Build
-
-Use the provided Makefile, or run:
-
-```
-make run
-```
-
-## Usage
-
-1. Choose a tool from the toolbar.
-2. Click and drag on the canvas to draw.
-3. Use the selector tool to select any object.
-4. Change color, size, position, or delete selected objects.
-5. Use layer tools to bring objects to the front or send them to the back.
-
 ## Code Structure
 
 The core drawing element is defined as:
@@ -79,6 +48,53 @@ struct PrintObj {
     int size;
 };
 ```
+
+## Build Instructions (Docker image)
+
+### Prerequisites
+
+> You need to have **Docker** installed on your machine
+
+Here is the instruction of install **Docker** on your computer:
+> https://chat.openai.com/?q=How%20to%20install%20Docker
+
+### Build the Docker Image
+
+```bash
+docker build -t bobcat-ui-application .
+```
+
+### Run the Docker Container
+
+```bash
+docker run -d --name bobcat-ui-application -p 8964:8964 bobcat-ui-application
+```
+
+The **Bobcat UI Application** running on browser
+> http://localhost:8964
+
+### Clean Up Docker Containers and Images
+
+stop the running container:
+```bash
+docker stop bobcat-ui-application
+```
+
+remove the container:
+```bash
+docker rm bobcat-ui-application
+```
+
+
+## Usage
+
+1. Choose a tool from the toolbar.
+2. Click and drag on the canvas to draw.
+3. Use the selector tool to select any object.
+4. Change color, size, position, or delete selected objects.
+5. Use layer tools to bring objects to the front or send them to the back.
+
+
 
 ## Author
 

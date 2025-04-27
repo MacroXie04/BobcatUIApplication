@@ -1,98 +1,85 @@
 # ========================================================================================= #
-#  Bobcat UI Application Makefile      														#
+#  Bobcat UI Application Makefile       														#
 #  Hongzhe Xie                      														#
 #  University of California, Merced    												   		#
 # ========================================================================================= #
 
 # ===================================== PROJECT CONFIG ==================================== #
+SRC_DIR      := src
+TEST_DIR     := test
+OBJ_DIR      := objects
+LOCAL_BIN    := bin
+APP          := app
+MAIN         := main
+TEST         := test
+HEADERS      := $(wildcard $(SRC_DIR)/*.h)
+SRC          := $(wildcard $(SRC_DIR)/*.cpp)
+OBJ          := $(SRC:$(SRC_DIR)/%.cpp=$(OBJ_DIR)/%.o)
+TEST_SRC     := $(wildcard $(TEST_DIR)/*.cpp)
+TEST_OBJ     := $(TEST_SRC:$(TEST_DIR)/%.cpp=$(OBJ_DIR)/%.o)
+LOCAL_BIN_DIR:= $(LOCAL_BIN)
+BIN_DIR      := /tmp/$(LOCAL_BIN_DIR)$(PWD)
+OUT          := $(BIN_DIR)/$(APP)
+TEST_OUT     := $(BIN_DIR)/$(TEST)
 
-SRC_DIR = src
-TEST_DIR = test
+MAKEFLAGS   += --no-print-directory
 
-OBJ_DIR = objects
-LOCAL_BIN_DIR = bin
+# ================================ PLATFORM DETECTION ====================================== #
+UNAME_S := $(shell uname -s)
+ifeq ($(UNAME_S),Darwin)
+  # macOS
+  CXX        := clang++
+  CXXFLAGS   := -Wall `fltk-config --cxxflags` -std=c++17 -DGL_SILENCE_DEPRECATION
+  GLFLAGS    := -framework OpenGL
+else
+  # assume Linux
+  CXX        := g++
+  CXXFLAGS   := -Wall `fltk-config --cxxflags` -std=c++17
+  GLFLAGS    := -lGL -lGLU
+endif
 
-APP = app
-MAIN = main
-TEST = test
+LDFLAGS := `fltk-config --ldflags` -lfltk_gl -lfltk_images $(GLFLAGS)
 
-# =================================== COMPILER SETTINGS =================================== #
-
-CXX = clang++
-
-CXXFLAGS = -Wall `fltk-config --cxxflags` -std=c++17 -DGL_SILENCE_DEPRECATION
-LDFLAGS = `fltk-config --ldflags` -lfltk_gl -lfltk_images -framework OpenGL
-
-
-# ==================================== OTHER SETTINGS ===================================== #
-
-LOCAL_DIR := $(PWD)
-BIN_DIR = /tmp/$(LOCAL_BIN_DIR)$(LOCAL_DIR)
-
-SRC = $(wildcard $(SRC_DIR)/*.cpp)
-OBJ = $(SRC:$(SRC_DIR)/%.cpp=$(OBJ_DIR)/%.o)
-OUT = $(BIN_DIR)/$(APP)
-
-TEST_SRC = $(wildcard $(TEST_DIR)/*.cpp)
-TEST_OBJ = $(TEST_SRC:$(TEST_DIR)/%.cpp=$(OBJ_DIR)/%.o)
-TEST_OUT = $(BIN_DIR)/$(TEST)
-
-HEADERS = $(wildcard $(SRC_DIR)/*.h)
-
-MAKEFLAGS += --no-print-directory
-
-CURRENT_BRANCH = $(shell git rev-parse --abbrev-ref HEAD)
+# ==================================== RULES ================================================ #
 
 all: $(OUT)
 
-$(OUT): $(OBJ) $(BIN_DIR) $(LOCAL_BIN_DIR)
+$(OUT): $(OBJ) | $(OBJ_DIR) $(BIN_DIR) $(LOCAL_BIN_DIR)
 	$(CXX) $(OBJ) -o $(OUT) $(LDFLAGS)
-	@rm -f $(LOCAL_BIN_DIR)/$(APP)
-	@ln -s $(OUT) $(LOCAL_BIN_DIR)/$(APP)
+	rm -f $(LOCAL_BIN_DIR)/$(APP)
+	ln -s $(OUT) $(LOCAL_BIN_DIR)/$(APP)
 
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp $(OBJ_DIR) $(HEADERS)
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp | $(OBJ_DIR)
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 $(OBJ_DIR):
-	@mkdir -p $(OBJ_DIR)
+	mkdir -p $(OBJ_DIR)
 
 $(BIN_DIR):
-	@mkdir -p $(BIN_DIR)
+	mkdir -p $(BIN_DIR)
 
 $(LOCAL_BIN_DIR):
-	@mkdir -p $(LOCAL_BIN_DIR)
+	mkdir -p $(LOCAL_BIN_DIR)
 
-run: $(OUT)
+run: all
 	clear
 	@$(LOCAL_BIN_DIR)/$(APP)
 
-test: $(OBJ) $(TEST_OBJ) $(BIN_DIR) $(LOCAL_BIN_DIR) 
-	$(CXX) $(filter-out $(OBJ_DIR)/$(MAIN).o, $(OBJ)) $(TEST_OBJ) -o $(TEST_OUT) $(LDFLAGS)
-	@rm -f $(LOCAL_BIN_DIR)/$(TEST)
-	@ln -s $(TEST_OUT) $(LOCAL_BIN_DIR)/$(TEST)
-	@clear
+test: $(OBJ) $(TEST_OBJ) | $(BIN_DIR) $(LOCAL_BIN_DIR)
+	$(CXX) $(filter-out $(OBJ_DIR)/$(MAIN).o,$(OBJ)) $(TEST_OBJ) -o $(TEST_OUT) $(LDFLAGS)
+	rm -f $(LOCAL_BIN_DIR)/$(TEST)
+	ln -s $(TEST_OUT) $(LOCAL_BIN_DIR)/$(TEST)
+	clear
 	$(LOCAL_BIN_DIR)/$(TEST) --output=color || true
 
-autograde: clean $(OBJ) $(TEST_OBJ) $(BIN_DIR) $(LOCAL_BIN_DIR) 
-	@$(CXX) $(filter-out $(OBJ_DIR)/$(MAIN).o, $(OBJ)) $(TEST_OBJ) -o $(TEST_OUT) $(LDFLAGS)
-	@rm -f $(LOCAL_BIN_DIR)/$(TEST)
-	@ln -s $(TEST_OUT) $(LOCAL_BIN_DIR)/$(TEST)
-	@xvfb-run $(LOCAL_BIN_DIR)/$(TEST) || true
+autograde: clean test
+	xvfb-run $(LOCAL_BIN_DIR)/$(TEST) || true
 
-$(OBJ_DIR)/$(TEST).o: $(TEST_DIR)/$(TEST).cpp $(HEADERS)
-	$(CXX) $(CXXFLAGS) -c $(TEST_DIR)/$(TEST).cpp -o $(OBJ_DIR)/$(TEST).o
-
-pull:
-ifeq ($(shell git rev-parse --is-inside-work-tree 2>/dev/null),true)
-	@git reset --hard
-	@git clean -fdx
-	@git pull origin $(CURRENT_BRANCH) --ff-only
-else
-	@echo "No git repository found in the current directory"
-endif
+$(OBJ_DIR)/$(TEST).o: $(TEST_DIR)/$(TEST).cpp | $(OBJ_DIR)
+	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 clean:
-	@rm -f $(LOCAL_BIN_DIR)/$(APP) $(OBJ) $(LOCAL_BIN_DIR)/$(TEST) $(TEST_OBJ)
-	@rmdir $(LOCAL_BIN_DIR) $(OBJ_DIR) 2> /dev/null || true
+	rm -f $(LOCAL_BIN_DIR)/$(APP) $(OBJ) $(LOCAL_BIN_DIR)/$(TEST) $(TEST_OBJ)
+	rmdir $(LOCAL_BIN_DIR) $(OBJ_DIR) 2> /dev/null || true
 
-.PHONY: run pull test clean
+.PHONY: all run test autograde clean
