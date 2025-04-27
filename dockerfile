@@ -1,33 +1,68 @@
-# Use Ubuntu 22.04 as base
-FROM ubuntu:22.04
+################################################################################################
+# Project: Bobcat UI Application Project
+# Author: Hongzhe Xie
+# Date: April 2025
+# Description:
+#   This Docker simulation the environment of Steam Plug.
+################################################################################################
 
-# Install system packages
-RUN apt update && apt install -y \
+# ----------------------------------------------------------------------------------------------
+# Step 1: Use Debian 12 (Bookworm) as the base image
+# ----------------------------------------------------------------------------------------------
+FROM debian:bookworm
+
+# ----------------------------------------------------------------------------------------------
+# Step 2: Install all necessary build tools, libraries, and Xpra dependencies
+# ----------------------------------------------------------------------------------------------
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    g++ \
     clang \
-    make \
     cmake \
-    git \
-    libfltk1.3-dev \
+    fltk1.3-dev \
+    libgl1-mesa-dev \
     libglu1-mesa-dev \
     libx11-dev \
-    libxext-dev \
-    libxft-dev \
-    libxinerama-dev \
+    libpng-dev \
+    xpra \
+    wget \
+    xauth \
+    x11-xserver-utils \
     xvfb \
-    x11-apps \
-    && apt clean
+    && rm -rf /var/lib/apt/lists/*
 
-# Set environment variables for FLTK and graphics
-ENV DISPLAY=:0
+# ----------------------------------------------------------------------------------------------
+# Step 3: Configure environment variables
+# ----------------------------------------------------------------------------------------------
+ENV DISPLAY=:100
 
-# Create working directory
+# ----------------------------------------------------------------------------------------------
+# Step 4: Set up the application directory
+# ----------------------------------------------------------------------------------------------
 WORKDIR /app
 
-# Copy source code into container
+# Copy all project files into the container
 COPY . .
 
-# Build the application
-RUN make clean && make all
+# ----------------------------------------------------------------------------------------------
+# Step 5: Prepare source files
+# ----------------------------------------------------------------------------------------------
+# Search and replace macOS-specific OpenGL headers with Linux-compatible ones
+RUN find . -type f \( -name '*.cpp' -o -name '*.h' \) \
+      -exec sed -i -e 's|<OpenGL/gl.h>|<GL/gl.h>|g' \
+                   -e 's|<OpenGL/glu.h>|<GL/glu.h>|g' {} +
 
-# Default command: run the app
-CMD ["make", "run"]
+# ----------------------------------------------------------------------------------------------
+# Step 6: Build the application
+# ----------------------------------------------------------------------------------------------
+RUN make clean && make -j"$(nproc)"
+
+# ----------------------------------------------------------------------------------------------
+# Step 7: Launch Xpra server and start the application
+# ----------------------------------------------------------------------------------------------
+# Bind the Xpra server strictly to localhost on port 8964
+CMD xpra start :100 \
+    --bind-tcp=0.0.0.0:8964 \
+    --start-child=./bin/app \
+    --exit-with-children \
+    --daemon=no
