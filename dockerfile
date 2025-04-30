@@ -55,7 +55,16 @@ RUN find . -type f \( -name '*.cpp' -o -name '*.h' \) \
 # ----------------------------------------------------------------------------------------------
 # Step 6: Build the application
 # ----------------------------------------------------------------------------------------------
-RUN make clean && make -j"$(nproc)"
+RUN mkdir -p bin objects \
+ && for f in src/*.cpp; do \
+      echo "Compiling $f"; \
+      g++ -Wall $(fltk-config --cxxflags) -std=c++17 -c "$f" \
+         -o objects/$(basename "$f" .cpp).o; \
+    done \
+ && echo "Linking into bin/app" \
+ && g++ objects/*.o -o bin/app \
+        $(fltk-config --ldflags) -lfltk_gl -lfltk_images -lGL -lGLU
+
 
 # ----------------------------------------------------------------------------------------------
 # Step 7: Launch Xpra server and start the application

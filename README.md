@@ -6,6 +6,9 @@ BobcatUIApplication is a complete paint application developed in C++ using the F
 
 This project was created to demonstrate interactive GUI programming, object-oriented design, and real-time rendering. The application supports a variety of tools and features that allow users to create, select, edit, and manage their drawings.
 
+![Screenshot.png](Screenshot.png)
+
+
 ## Features and Scoring
 
 | Feature                                                                               | Points |
@@ -50,6 +53,9 @@ struct PrintObj {
 ```
 
 ## Build Instructions (Docker image)
+
+> Based on the change of the **Bobcat UI Library**, the **Bobcat UI Application** is not running on the **Steam Plug**.
+> The **Bobcat UI Application** is running **only** on the **Docker** container.
 
 ### Prerequisites
 
