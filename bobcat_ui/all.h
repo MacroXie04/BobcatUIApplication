@@ -19,4 +19,7 @@
 #include "canvas.h"
 #include "group.h"
 
+// slider.h create by Hongzhe Xie
+#include "slider.h"
+
 #endif

@@ -124,11 +124,11 @@ void Application::onColorChange(bobcat::Widget *) {
 
 Application::Application() {
     // initialize the application and size of each window
-    window = new bobcat::Window(20, 20, 700, 500, "Programming Project");
+    window = new bobcat::Window(20, 20, 700, 520, "Programming Project");
     toolbar = new Toolbar(0, 0, 50, 600);
     canvas = new Canvas(50, 0, 650, 450);
-    colorSelector = new ColorSelector(50, 450, 350, 50);
-    sizeSelector = new SizeSelector(550, 450, 150, 50);
+    colorSelector = new ColorSelector(50, 450, 440, 70);
+    sizeSelector = new SizeSelector(490, 450, 210, 70);
     colorSelector->box(FL_BORDER_BOX);
 
     // add the widgets to the window
