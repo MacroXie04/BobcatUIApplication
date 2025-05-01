@@ -1,5 +1,4 @@
 #include "Toolbar.h"
-#include <FL/Enumerations.H>
 #include <cstdio>
 #include <iostream>
 #include "Enums.h"

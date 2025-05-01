@@ -1,10 +1,6 @@
 #ifndef CANVAS_H
 #define CANVAS_H
 
-// if you are using steamplug environment please use this to load bobcat_ui
-// #include <bobcat_ui.h/all.h>
-
-// if you are using local environment please use this to load bobcat_ui
 #include "../bobcat_ui/all.h"
 #include <vector>
 #include "Print_obj.h"

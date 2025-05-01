@@ -120,92 +120,107 @@ void Canvas::render() {
     if (!valid()) {
         glViewport(0, 0, w(), h());
     }
-    glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+    glClearColor(1, 1, 1, 1);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    float wpx = (float) w(), hpx = (float) h(), aspect = wpx / hpx;
+
+    float wpx = static_cast<float>(w());
+    float hpx = static_cast<float>(h());
+    float aspect = wpx / hpx;
+
+    constexpr float sel_px = 4.0f;
+    constexpr float sel_line_width = 2.0f;
+    float selu = 2.0f * sel_px / hpx;
+
     for (size_t idx = 0; idx < prints.size(); ++idx) {
         auto &p = prints[idx];
+
         glColor3f(p.getR(), p.getG(), p.getB());
-        float s = p.getSize(), u = 2.0f * s / hpx;
+        float u = 2.0f * p.getSize() / hpx;
+
         switch (p.getTool()) {
             case PENCIL:
-                glPointSize(p.getSize());
-                glBegin(GL_POINTS);
-                    for (auto &pt: p.getPoints()) {
-                        glVertex2f(pt.x, pt.y);
-                    }
+                glLineWidth(p.getSize());
+                glBegin(GL_LINE_STRIP);
+                for (auto &pt : p.getPoints()) glVertex2f(pt.x, pt.y);
                 glEnd();
                 break;
+
             case CIRCLE: {
                 auto c = p.getPoint(0);
                 glBegin(GL_POLYGON);
-                    for (int i = 0; i < 64; ++i) {
-                        float a = i * 2.0f * M_PI / 64.0f;
-                        float dx = cosf(a) * u, dy = sinf(a) * u * aspect;
-                        glVertex2f(c.x + dx, c.y + dy);
-                    }
+                for (int i = 0; i < 64; ++i) {
+                    float a = i * 2.0f * M_PI / 64.0f;
+                    glVertex2f(c.x + cosf(a) * u, c.y + sinf(a) * u * aspect);
+                }
                 glEnd();
                 break;
             }
+
             case RECTANGLE: {
                 auto c = p.getPoint(0);
                 glBegin(GL_POLYGON);
-                    glVertex2f(c.x - u, c.y - u * aspect);
-                    glVertex2f(c.x + u, c.y - u * aspect);
-                    glVertex2f(c.x + u, c.y + u * aspect);
-                    glVertex2f(c.x - u, c.y + u * aspect);
-                glEnd();
-                break;
-            }
-            case TRIANGLE: {
-                auto c = p.getPoint(0);
-                glBegin(GL_POLYGON);
-                    glVertex2f(c.x, c.y + u * aspect);
-                    glVertex2f(c.x - u, c.y - u * aspect);
-                    glVertex2f(c.x + u, c.y - u * aspect);
-                glEnd();
-                break;
-            }
-            case POLYGON: {
-                auto c = p.getPoint(0);
-                glBegin(GL_POLYGON);
-                    for (int i = 0; i < 5; ++i) {
-                        float a = i * 2.0f * M_PI / 5.0f - M_PI / 2.0f;
-                        float dx = cosf(a) * u, dy = sinf(a) * u * aspect;
-                        glVertex2f(c.x + dx, c.y + dy);
-                    }
-                glEnd();
-                break;
-            }
-            default: break;
-        }
-        if ((int) idx == selected) {
-            glColor3f(1, 0, 0);
-            if (p.getTool() == PENCIL) {
-                float minx = 1e9, maxx = -1e9, miny = 1e9, maxy = -1e9;
-                for (auto &pt: p.getPoints()) {
-                    if (pt.x < minx)minx = pt.x;
-                    if (pt.x > maxx)maxx = pt.x;
-                    if (pt.y < miny)miny = pt.y;
-                    if (pt.y > maxy)maxy = pt.y;
-                }
-                glBegin(GL_LINE_LOOP);
-                glVertex2f(minx, miny);
-                glVertex2f(maxx, miny);
-                glVertex2f(maxx, maxy);
-                glVertex2f(minx, maxy);
-                glEnd();
-            } else {
-                auto c = p.getPoint(0);
-                glBegin(GL_LINE_LOOP);
                 glVertex2f(c.x - u, c.y - u * aspect);
                 glVertex2f(c.x + u, c.y - u * aspect);
                 glVertex2f(c.x + u, c.y + u * aspect);
                 glVertex2f(c.x - u, c.y + u * aspect);
                 glEnd();
+                break;
+            }
+
+            case TRIANGLE: {
+                auto c = p.getPoint(0);
+                glBegin(GL_POLYGON);
+                glVertex2f(c.x,     c.y + u * aspect);
+                glVertex2f(c.x - u, c.y - u * aspect);
+                glVertex2f(c.x + u, c.y - u * aspect);
+                glEnd();
+                break;
+            }
+
+            case POLYGON: {
+                auto c = p.getPoint(0);
+                glBegin(GL_POLYGON);
+                for (int i = 0; i < 5; ++i) {
+                    float a = i * 2.0f * M_PI / 5.0f - M_PI / 2.0f;
+                    glVertex2f(c.x + cosf(a) * u, c.y + sinf(a) * u * aspect);
+                }
+                glEnd();
+                break;
+            }
+
+            default: break;
+        }
+
+        if (static_cast<int>(idx) == selected) {
+            glColor3f(1, 0, 0);
+            glLineWidth(sel_line_width);
+
+            if (p.getTool() == PENCIL) {
+                float minx = 1e9f, maxx = -1e9f, miny = 1e9f, maxy = -1e9f;
+                for (auto &pt : p.getPoints()) {
+                    if (pt.x < minx) minx = pt.x;
+                    if (pt.x > maxx) maxx = pt.x;
+                    if (pt.y < miny) miny = pt.y;
+                    if (pt.y > maxy) maxy = pt.y;
+                }
+                glBegin(GL_LINE_LOOP);
+                glVertex2f(minx - selu, miny - selu * aspect);
+                glVertex2f(maxx + selu, miny - selu * aspect);
+                glVertex2f(maxx + selu, maxy + selu * aspect);
+                glVertex2f(minx - selu, maxy + selu * aspect);
+                glEnd();
+            } else {
+                auto c = p.getPoint(0);
+                glBegin(GL_LINE_LOOP);
+                glVertex2f(c.x - u - selu, c.y - u * aspect - selu * aspect);
+                glVertex2f(c.x + u + selu, c.y - u * aspect - selu * aspect);
+                glVertex2f(c.x + u + selu, c.y + u * aspect + selu * aspect);
+                glVertex2f(c.x - u - selu, c.y + u * aspect + selu * aspect);
+                glEnd();
             }
         }
     }
+
     glFlush();
     swap_buffers();
 }

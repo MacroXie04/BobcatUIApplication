@@ -31,8 +31,6 @@ class Application : public bobcat::Application_ {
 
 public:
     Application();
-
-    // friend struct::AppTest;
 };
 
 #endif

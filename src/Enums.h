@@ -21,15 +21,5 @@ enum ACTION {
     BRING_TO_FRONT,
 };
 
-enum COLOR {
-    RED,
-    ORANGE,
-    YELLOW,
-    GREEN,
-    BLUE,
-    INDIGO,
-    VIOLET
-};
-
 
 #endif
