@@ -3,14 +3,23 @@
 
 #include "bobcat_ui.h"
 
-#include <FL/Enumerations.H>
-#include <FL/Fl_Double_Window.H>
-#include <FL/Fl_PNG_Image.H>
+// Base on the environment, include the corresponding header files
+#if defined(_WIN32)
+    #include <FL/Enumerations.H>
+    #include <FL/Fl_Double_Window.H>
+    #include <FL/Fl_PNG_Image.H>
+#elif defined(__APPLE__)
+    #include <FL/Enumerations.H>
+    #include <FL/Fl_Double_Window.H>
+    #include <FL/Fl_PNG_Image.H>
+#else
+    #include <FL/Enumerations.H>
+    #include <FL/Fl_Double_Window.H>
+    #include <FL/Fl_PNG_Image.H>
+#endif
 
 #include <string>
 #include <functional>
-
-// #include <FL/names.h>
 
 namespace bobcat {
 
@@ -35,14 +44,14 @@ class Window : public Fl_Double_Window {
     }
 
 public:
-    Window(int w, int h, std::string title = "") : Fl_Double_Window(w, h, title.c_str()) { 
-        init(); 
-        caption = title; 
+    Window(int w, int h, std::string title = "") : Fl_Double_Window(w, h, title.c_str()) {
+        init();
+        caption = title;
         Fl_Double_Window::copy_label(title.c_str());
     }
 
-    Window(int x, int y, int w, int h, std::string title = "") : Fl_Double_Window(x, y, w, h, title.c_str()) { 
-        init(); 
+    Window(int x, int y, int w, int h, std::string title = "") : Fl_Double_Window(x, y, w, h, title.c_str()) {
+        init();
         caption = title;
         Fl_Double_Window::copy_label(title.c_str());
     }
@@ -91,7 +100,7 @@ public:
         callback([](bobcat::Widget * sender, void *self){
             Window *win = (Window *)self;
             win->willHideCb(win);
-        }, this);   
+        }, this);
     }
 
     void onClick(std::function<void(bobcat::Widget *)> cb){
@@ -117,10 +126,8 @@ public:
         delete icon_data;
     }
 
-    friend struct ::AppTest;
+
 };
-
-
 
 }
 

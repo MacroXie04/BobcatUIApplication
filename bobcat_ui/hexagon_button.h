@@ -2,17 +2,31 @@
 #define BOBCAT_UI_HEXAGON_BUTTON
 
 #include "bobcat_ui.h"
-#include <FL/Enumerations.H>
-#include <FL/Fl_Group.H>
-#include <FL/Fl_Light_Button.H>
-#include <FL/fl_draw.H>
-#include <cmath>
 
-#include <FL/Fl_Button.H>
+// Base on the environment, include the corresponding header files
+#if defined(_WIN32)
+    #include <FL/Enumerations.H>
+    #include <FL/Fl_Group.H>
+    #include <FL/Fl_Light_Button.H>
+    #include <FL/fl_draw.H>
+    #include <FL/Fl_Button.H>
+#elif defined(__APPLE__)
+    #include <FL/Enumerations.H>
+    #include <FL/Fl_Group.H>
+    #include <FL/Fl_Light_Button.H>
+    #include <FL/fl_draw.H>
+    #include <FL/Fl_Button.H>
+#else
+    #include <FL/Enumerations.H>
+    #include <FL/Fl_Group.H>
+    #include <FL/Fl_Light_Button.H>
+    #include <FL/fl_draw.H>
+    #include <FL/Fl_Button.H>
+#endif
 
 #include <string>
 #include <functional>
-
+#include <cmath>
 
 namespace bobcat {
 
@@ -141,7 +155,6 @@ public:
         Fl_Button::take_focus();
     }
 
-    friend struct ::AppTest;
 };
 
 }

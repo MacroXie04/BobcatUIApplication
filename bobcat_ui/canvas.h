@@ -3,10 +3,24 @@
 
 #include "bobcat_ui.h"
 
-#include <FL/Enumerations.H>
-#include <FL/Fl_Gl_Window.H>
-#include <FL/Fl_PNG_Image.H>
-#include <OpenGL/gl.h>
+// Base on the environment, include the corresponding header files
+#if defined(_WIN32)
+    #include <FL/Enumerations.H>
+    #include <FL/Fl_Gl_Window.H>
+    #include <FL/Fl_PNG_Image.H>
+    #include <windows.h>
+    #include <GL/gl.h>
+#elif defined(__APPLE__)
+    #include <FL/Enumerations.H>
+    #include <FL/Fl_Gl_Window.H>
+    #include <FL/Fl_PNG_Image.H>
+    #include <OpenGL/gl.h>
+#else
+    #include <FL/Enumerations.H>
+    #include <FL/Fl_Gl_Window.H>
+    #include <FL/Fl_PNG_Image.H>
+    #include <GL/gl.h>
+#endif
 
 #include <string>
 #include <functional>
@@ -148,7 +162,6 @@ public:
         Fl::flush();                // Make sure to draw what needs to be drawn
     }
 
-    friend struct ::AppTest;
 };
 
 

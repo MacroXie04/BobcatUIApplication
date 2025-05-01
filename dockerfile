@@ -44,16 +44,9 @@ WORKDIR /app
 # Copy all project files into the container
 COPY . .
 
-# ----------------------------------------------------------------------------------------------
-# Step 5: Prepare source files
-# ----------------------------------------------------------------------------------------------
-# Search and replace macOS-specific OpenGL headers with Linux-compatible ones
-RUN find . -type f \( -name '*.cpp' -o -name '*.h' \) \
-      -exec sed -i -e 's|<OpenGL/gl.h>|<GL/gl.h>|g' \
-                   -e 's|<OpenGL/glu.h>|<GL/glu.h>|g' {} +
 
 # ----------------------------------------------------------------------------------------------
-# Step 6: Build the application
+# Step 5: Build the application
 # ----------------------------------------------------------------------------------------------
 RUN mkdir -p bin objects \
  && for f in src/*.cpp; do \
@@ -67,7 +60,7 @@ RUN mkdir -p bin objects \
 
 
 # ----------------------------------------------------------------------------------------------
-# Step 7: Launch Xpra server and start the application
+# Step 6: Launch Xpra server and start the application
 # ----------------------------------------------------------------------------------------------
 # Bind the Xpra server strictly to localhost on port 8964
 CMD xpra start :100 \

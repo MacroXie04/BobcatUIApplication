@@ -2,9 +2,21 @@
 #define BOBCAT_UI_MENU
 
 #include "bobcat_ui.h"
-#include <FL/Enumerations.H>
-#include <FL/Fl_Menu_Bar.H>
-#include <FL/Fl_Widget.H>
+
+// Base on the environment, include the corresponding header files
+#if defined(_WIN32)
+    #include <FL/Enumerations.H>
+    #include <FL/Fl_Menu_Bar.H>
+    #include <FL/Fl_Widget.H>
+#elif defined(__APPLE__)
+    #include <FL/Enumerations.H>
+    #include <FL/Fl_Menu_Bar.H>
+    #include <FL/Fl_Widget.H>
+#else
+    #include <FL/Enumerations.H>
+    #include <FL/Fl_Menu_Bar.H>
+    #include <FL/Fl_Widget.H>
+#endif
 
 #include <map>
 #include <vector>
@@ -102,7 +114,6 @@ public:
         items.insert(std::pair<int, MenuItem*>(pos, item));
     }
 
-    friend struct ::AppTest;
 };
 
 }

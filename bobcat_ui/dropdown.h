@@ -3,9 +3,20 @@
 
 #include "bobcat_ui.h"
 
-#include <FL/Enumerations.H>
-#include <FL/Fl_Choice.H>
-#include <FL/Fl_Widget.H>
+// Base on the environment, include the corresponding header files
+#if defined(_WIN32)
+  #include <FL/Enumerations.H>
+  #include <FL/Fl_Choice.H>
+  #include <FL/Fl_Widget.H>
+#elif defined(__APPLE__)
+  #include <FL/Enumerations.H>
+  #include <FL/Fl_Choice.H>
+  #include <FL/Fl_Widget.H>
+#else
+  #include <FL/Enumerations.H>
+  #include <FL/Fl_Choice.H>
+  #include <FL/Fl_Widget.H>
+#endif
 
 #include <string>
 #include <functional>
@@ -149,7 +160,6 @@ public:
         Fl_Choice::take_focus();
     }
 
-    friend struct ::AppTest;
 };
 
 }

@@ -3,7 +3,14 @@
 
 #include "bobcat_ui.h"
 
-#include <FL/Fl_Check_Button.H>
+// Base on the environment, include the corresponding header files
+#if defined(_WIN32)
+    #include <FL/Fl_Check_Button.H>
+#elif defined(__APPLE__)
+    #include <FL/Fl_Check_Button.H>
+#else
+    #include <FL/Fl_Check_Button.H>
+#endif
 
 #include <string>
 #include <functional>
@@ -128,7 +135,6 @@ public:
         Fl_Check_Button::take_focus();
     }
 
-    friend struct ::AppTest;
 };
 
 }
