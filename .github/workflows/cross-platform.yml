@@ -23,8 +23,7 @@ jobs:
         run: |
           if [[ "$RUNNER_OS" == "Linux" ]]; then
             sudo apt-get update
-            sudo apt-get install -y build-essential libx11-dev libglu1-mesa-dev libgl1-mesa-dev libfltk1.3-dev fltk1.3-doc fltk1.3-examples xvfb
-            which fltk-config || { echo "fltk-config not found"; exit 1; }
+            sudo apt-get install -y build-essential fltk1.3-dev libglu1-mesa-dev libgl1-mesa-dev xvfb
           elif [[ "$RUNNER_OS" == "macOS" ]]; then
             brew install fltk
           elif [[ "$RUNNER_OS" == "Windows" ]]; then
@@ -46,7 +45,3 @@ jobs:
         run: |
           ./bin/app & sleep 5
           pkill -f bin/app
-
-      - name: Run app test (Windows)
-        if: runner.os == 'Windows'
-        run: echo "FLTK unavailable on Windows via Chocolatey. Skipping run test."
