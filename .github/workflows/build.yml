@@ -23,4 +23,7 @@ jobs:
         run: make
 
       - name: Run app (headless test)
-        run: xvfb-run make run
+        run: |
+          set -e
+          xvfb-run timeout 5s make run | tee run_output.log
+          grep "Bobcat UI Application Running..." run_output.log
