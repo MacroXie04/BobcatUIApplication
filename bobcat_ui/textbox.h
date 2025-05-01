@@ -3,21 +3,22 @@
 
 #include "bobcat_ui.h"
 
+// Base on the environment, include the corresponding header files
 #if defined(_WIN32)
-  #include <FL/Enumerations.H>
-  #include <FL/Fl.H>
-  #include <FL/Fl_Box.H>
-  #include <FL/Fl_Widget.H>
+    #include <FL/Enumerations.H>
+    #include <FL/Fl.H>
+    #include <FL/Fl_Box.H>
+    #include <FL/Fl_Widget.H>
 #elif defined(__APPLE__)
-  #include <FL/Enumerations.H>
-  #include <FL/Fl.H>
-  #include <FL/Fl_Box.H>
-  #include <FL/Fl_Widget.H>
+    #include <FL/Enumerations.H>
+    #include <FL/Fl.H>
+    #include <FL/Fl_Box.H>
+    #include <FL/Fl_Widget.H>
 #else
-  #include <FL/Enumerations.H>
-  #include <FL/Fl.H>
-  #include <FL/Fl_Box.H>
-  #include <FL/Fl_Widget.H>
+    #include <FL/Enumerations.H>
+    #include <FL/Fl.H>
+    #include <FL/Fl_Box.H>
+    #include <FL/Fl_Widget.H>
 #endif
 
 #include <string>
@@ -127,7 +128,6 @@ public:
         Fl_Box::take_focus();
     }
 
-    friend struct ::AppTest;
 };
 
 }

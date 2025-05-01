@@ -160,7 +160,6 @@ public:
         Fl_Choice::take_focus();
     }
 
-    friend struct ::AppTest;
 };
 
 }

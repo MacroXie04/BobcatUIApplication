@@ -2,12 +2,14 @@
 #define BOBCAT_UI_IMAGE
 
 #include "textbox.h"
+
+// Base on the environment, include the corresponding header files
 #if defined(_WIN32)
-  #include <FL/Fl_PNG_Image.H>
+    #include <FL/Fl_PNG_Image.H>
 #elif defined(__APPLE__)
-  #include <FL/Fl_PNG_Image.H>
+    #include <FL/Fl_PNG_Image.H>
 #else
-  #include <FL/Fl_PNG_Image.H>
+    #include <FL/Fl_PNG_Image.H>
 #endif
 #include <string>
 #include <iostream>
@@ -145,8 +147,7 @@ public:
         Fl_Box::labelfont(f);
         parent()->redraw();
     }
-    
-    friend struct ::AppTest;
+
 };
 
 }

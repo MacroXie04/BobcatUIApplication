@@ -3,12 +3,13 @@
 
 #include "bobcat_ui.h"
 
+// Base on the environment, include the corresponding header files
 #if defined(_WIN32)
-  #include <FL/Fl_Return_Button.H>
+    #include <FL/Fl_Return_Button.H>
 #elif defined(__APPLE__)
-  #include <FL/Fl_Return_Button.H>
+    #include <FL/Fl_Return_Button.H>
 #else
-  #include <FL/Fl_Return_Button.H>
+    #include <FL/Fl_Return_Button.H>
 #endif
 
 #include <string>
@@ -109,7 +110,6 @@ public:
         Fl_Return_Button::take_focus();
     }
 
-    friend struct ::AppTest;
 };
 
 }

@@ -111,7 +111,6 @@ public:
         Fl_Button::take_focus();
     }
 
-    friend struct ::AppTest;
 };
 
 }

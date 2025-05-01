@@ -1,0 +1,54 @@
+name: Cross-Platform Build
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [ ubuntu-latest, macos-latest, windows-latest ]
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v3
+
+      - name: Install dependencies
+        shell: bash
+        run: |
+          if [[ "$RUNNER_OS" == "Linux" ]]; then
+            sudo apt-get update
+            sudo apt-get install -y build-essential fltk1.3-dev libglu1-mesa-dev libgl1-mesa-dev xvfb
+          elif [[ "$RUNNER_OS" == "macOS" ]]; then
+            brew install fltk
+          elif [[ "$RUNNER_OS" == "Windows" ]]; then
+            choco install fltk --version=1.3.5
+          fi
+
+      - name: Build project
+        run: make
+
+      - name: Run app test (Linux)
+        if: runner.os == 'Linux'
+        run: |
+          set -e
+          xvfb-run timeout 5s make run | tee run_output.log
+          grep "Bobcat UI Application Running..." run_output.log
+
+      - name: Run app test (macOS)
+        if: runner.os == 'macOS'
+        run: |
+          ./bin/app & sleep 5
+          pkill -f bin/app
+
+      - name: Run app test (Windows)
+        if: runner.os == 'Windows'
+        run: |
+          Start-Process -NoNewWindow -FilePath ".\\bin\\app.exe"
+          Start-Sleep -Seconds 5
+          Stop-Process -Name "app"

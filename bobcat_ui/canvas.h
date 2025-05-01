@@ -162,7 +162,6 @@ public:
         Fl::flush();                // Make sure to draw what needs to be drawn
     }
 
-    friend struct ::AppTest;
 };
 
 
