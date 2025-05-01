@@ -2,9 +2,19 @@
 #define BOBCAT_UI_MENU
 
 #include "bobcat_ui.h"
-#include <FL/Enumerations.H>
-#include <FL/Fl_Menu_Bar.H>
-#include <FL/Fl_Widget.H>
+#if defined(_WIN32)
+  #include <FL/Enumerations.H>
+  #include <FL/Fl_Menu_Bar.H>
+  #include <FL/Fl_Widget.H>
+#elif defined(__APPLE__)
+  #include <FL/Enumerations.H>
+  #include <FL/Fl_Menu_Bar.H>
+  #include <FL/Fl_Widget.H>
+#else
+  #include <FL/Enumerations.H>
+  #include <FL/Fl_Menu_Bar.H>
+  #include <FL/Fl_Widget.H>
+#endif
 
 #include <map>
 #include <vector>

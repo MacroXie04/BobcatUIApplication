@@ -7,7 +7,13 @@
 #define BOBCAT_UI_SLIDER
 
 #include "bobcat_ui.h"
-#include <FL/Fl_Slider.H>
+#if defined(_WIN32)
+  #include <FL/Fl_Slider.H>
+#elif defined(__APPLE__)
+  #include <FL/Fl_Slider.H>
+#else
+  #include <FL/Fl_Slider.H>
+#endif
 #include <functional>
 #include <string>
 

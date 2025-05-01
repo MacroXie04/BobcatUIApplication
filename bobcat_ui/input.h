@@ -3,14 +3,27 @@
 
 #include "bobcat_ui.h"
 
-#include <FL/Enumerations.H>
-#include <FL/Fl_Input.H>
-#include <FL/Fl_Widget.H>
+#if defined(_WIN32)
+  #include <FL/Enumerations.H>
+  #include <FL/Fl_Input.H>
+  #include <FL/Fl_Widget.H>
+    #include <FL/names.h>
+#elif defined(__APPLE__)
+  #include <FL/Enumerations.H>
+  #include <FL/Fl_Input.H>
+  #include <FL/Fl_Widget.H>
+    #include <FL/names.h>
+#else
+  #include <FL/Enumerations.H>
+  #include <FL/Fl_Input.H>
+  #include <FL/Fl_Widget.H>
+    #include <FL/names.h>
+#endif
 
 #include <string>
 #include <functional>
 
-// #include <FL/names.h>
+
 
 namespace bobcat {
 

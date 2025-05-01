@@ -3,10 +3,22 @@
 
 #include "bobcat_ui.h"
 
-#include <FL/Enumerations.H>
-#include <FL/Fl.H>
-#include <FL/Fl_Box.H>
-#include <FL/Fl_Widget.H>
+#if defined(_WIN32)
+  #include <FL/Enumerations.H>
+  #include <FL/Fl.H>
+  #include <FL/Fl_Box.H>
+  #include <FL/Fl_Widget.H>
+#elif defined(__APPLE__)
+  #include <FL/Enumerations.H>
+  #include <FL/Fl.H>
+  #include <FL/Fl_Box.H>
+  #include <FL/Fl_Widget.H>
+#else
+  #include <FL/Enumerations.H>
+  #include <FL/Fl.H>
+  #include <FL/Fl_Box.H>
+  #include <FL/Fl_Widget.H>
+#endif
 
 #include <string>
 #include <functional>

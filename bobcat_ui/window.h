@@ -3,9 +3,19 @@
 
 #include "bobcat_ui.h"
 
-#include <FL/Enumerations.H>
-#include <FL/Fl_Double_Window.H>
-#include <FL/Fl_PNG_Image.H>
+#if defined(_WIN32)
+  #include <FL/Enumerations.H>
+  #include <FL/Fl_Double_Window.H>
+  #include <FL/Fl_PNG_Image.H>
+#elif defined(__APPLE__)
+  #include <FL/Enumerations.H>
+  #include <FL/Fl_Double_Window.H>
+  #include <FL/Fl_PNG_Image.H>
+#else
+  #include <FL/Enumerations.H>
+  #include <FL/Fl_Double_Window.H>
+  #include <FL/Fl_PNG_Image.H>
+#endif
 
 #include <string>
 #include <functional>

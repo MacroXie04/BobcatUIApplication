@@ -3,7 +3,13 @@
 
 #include "bobcat_ui.h"
 
-#include <FL/Fl_Return_Button.H>
+#if defined(_WIN32)
+  #include <FL/Fl_Return_Button.H>
+#elif defined(__APPLE__)
+  #include <FL/Fl_Return_Button.H>
+#else
+  #include <FL/Fl_Return_Button.H>
+#endif
 
 #include <string>
 #include <functional>
