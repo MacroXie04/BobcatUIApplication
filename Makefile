@@ -62,7 +62,7 @@ $(LOCAL_BIN_DIR):
 	mkdir -p $(LOCAL_BIN_DIR)
 
 run: all
-	clear
+	@if [ -n "$$TERM" ]; then clear; fi
 	@$(LOCAL_BIN_DIR)/$(APP)
 
 test: $(OBJ) $(TEST_OBJ) | $(BIN_DIR) $(LOCAL_BIN_DIR)
