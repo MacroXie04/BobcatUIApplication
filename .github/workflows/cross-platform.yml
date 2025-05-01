@@ -10,7 +10,7 @@ jobs:
   build:
     strategy:
       matrix:
-        os: [ ubuntu-latest, macos-latest, windows-latest ]
+        os: [ ubuntu-latest, macos-latest ]
 
     runs-on: ${{ matrix.os }}
 
@@ -26,8 +26,6 @@ jobs:
             sudo apt-get install -y build-essential fltk1.3-dev libglu1-mesa-dev libgl1-mesa-dev xvfb
           elif [[ "$RUNNER_OS" == "macOS" ]]; then
             brew install fltk
-          elif [[ "$RUNNER_OS" == "Windows" ]]; then
-            choco install fltk --version=1.3.5
           fi
       - name: Build project
         run: make
