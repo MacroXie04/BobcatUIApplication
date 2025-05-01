@@ -27,9 +27,8 @@ jobs:
           elif [[ "$RUNNER_OS" == "macOS" ]]; then
             brew install fltk
           elif [[ "$RUNNER_OS" == "Windows" ]]; then
-            choco install fltk || echo "FLTK not available on Chocolatey; skipping"
+            choco install fltk --version=1.3.5
           fi
-
       - name: Build project
         run: make
 
@@ -39,7 +38,6 @@ jobs:
           set -e
           xvfb-run timeout 5s make run | tee run_output.log
           grep "Bobcat UI Application Running..." run_output.log
-
       - name: Run app test (macOS)
         if: runner.os == 'macOS'
         run: |
