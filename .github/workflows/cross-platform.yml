@@ -36,6 +36,13 @@ jobs:
           set -e
           xvfb-run timeout 5s make run | tee run_output.log
           grep "Bobcat UI Application Running..." run_output.log
+
+      - name: Capture screenshot (Linux only)
+        if: runner.os == 'Linux'
+        run: |
+          xvfb-run --server-args="-screen 0 1024x768x24" \
+            import -window root screenshot.png || echo "No display to capture"
+
       - name: Run app test (macOS)
         if: runner.os == 'macOS'
         run: |
