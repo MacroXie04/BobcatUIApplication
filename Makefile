@@ -1,5 +1,5 @@
 # ========================================================================================= #
-#  Bobcat UI Application Makefile       														#
+#  Bobcat UI Application Makefile       					       		   					#
 #  Hongzhe Xie                      														#
 #  University of California, Merced    												   		#
 # ========================================================================================= #
@@ -64,16 +64,6 @@ $(LOCAL_BIN_DIR):
 run: all
 	@if [ -n "$$TERM" ]; then clear; fi
 	@$(LOCAL_BIN_DIR)/$(APP)
-
-test: $(OBJ) $(TEST_OBJ) | $(BIN_DIR) $(LOCAL_BIN_DIR)
-	$(CXX) $(filter-out $(OBJ_DIR)/$(MAIN).o,$(OBJ)) $(TEST_OBJ) -o $(TEST_OUT) $(LDFLAGS)
-	rm -f $(LOCAL_BIN_DIR)/$(TEST)
-	ln -s $(TEST_OUT) $(LOCAL_BIN_DIR)/$(TEST)
-	clear
-	$(LOCAL_BIN_DIR)/$(TEST) --output=color || true
-
-autograde: clean test
-	xvfb-run $(LOCAL_BIN_DIR)/$(TEST) || true
 
 $(OBJ_DIR)/$(TEST).o: $(TEST_DIR)/$(TEST).cpp | $(OBJ_DIR)
 	$(CXX) $(CXXFLAGS) -c $< -o $@

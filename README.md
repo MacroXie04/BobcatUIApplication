@@ -73,7 +73,7 @@ docker build -t bobcat-ui-application .
 ### Run the Docker Container
 
 ```bash
-docker run -d --name bobcat-ui-application -p 8964:8964 bobcat-ui-application
+docker run -d --name bobcat-ui-application -p 8964:8964 -p 3000:3000 bobcat-ui-application
 ```
 
 The **Bobcat UI Application** running on browser
@@ -89,6 +89,11 @@ docker stop bobcat-ui-application
 remove the container:
 ```bash
 docker rm bobcat-ui-application
+```
+
+logs the container:
+```bash
+docker logs bobcat-ui-application
 ```
 
 
