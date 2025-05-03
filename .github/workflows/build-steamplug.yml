@@ -1,0 +1,35 @@
+name: Steam plug Build
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [ debian-latest ]
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v3
+
+      - name: Install dependencies
+        shell: bash
+        run: |
+          if [[ "$RUNNER_OS" == "debian" ]]; then
+            sudo apt-get update
+            sudo apt-get install -y build-essential fltk1.3-dev libglu1-mesa-dev libgl1-mesa-dev xvfb
+      - name: Build project
+        run: make
+
+      - name: Run app test (SteamPlug)
+        if: runner.os == 'debian'
+        run: |
+          set -e
+          xvfb-run timeout 5s make run | tee run_output.log
+          grep "Bobcat UI Application Running..." run_output.log

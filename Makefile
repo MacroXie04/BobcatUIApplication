@@ -18,7 +18,7 @@ OBJ          := $(SRC:$(SRC_DIR)/%.cpp=$(OBJ_DIR)/%.o)
 TEST_SRC     := $(wildcard $(TEST_DIR)/*.cpp)
 TEST_OBJ     := $(TEST_SRC:$(TEST_DIR)/%.cpp=$(OBJ_DIR)/%.o)
 LOCAL_BIN_DIR:= $(LOCAL_BIN)
-BIN_DIR      := /tmp/$(LOCAL_BIN_DIR)$(PWD)
+BIN_DIR      := $(LOCAL_BIN)
 OUT          := $(BIN_DIR)/$(APP)
 TEST_OUT     := $(BIN_DIR)/$(TEST)
 
@@ -44,19 +44,14 @@ LDFLAGS := `fltk-config --ldflags` -lfltk_gl -lfltk_images $(GLFLAGS)
 
 all: $(OUT)
 
-$(OUT): $(OBJ) | $(OBJ_DIR) $(BIN_DIR) $(LOCAL_BIN_DIR)
+$(OUT): $(OBJ) | $(OBJ_DIR) $(LOCAL_BIN_DIR)
 	$(CXX) $(OBJ) -o $(OUT) $(LDFLAGS)
-	rm -f $(LOCAL_BIN_DIR)/$(APP)
-	ln -s $(OUT) $(LOCAL_BIN_DIR)/$(APP)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp | $(OBJ_DIR)
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 $(OBJ_DIR):
 	mkdir -p $(OBJ_DIR)
-
-$(BIN_DIR):
-	mkdir -p $(BIN_DIR)
 
 $(LOCAL_BIN_DIR):
 	mkdir -p $(LOCAL_BIN_DIR)

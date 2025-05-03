@@ -91,6 +91,14 @@ remove the container:
 docker rm bobcat-ui-application
 ```
 
+rebuild container:
+```bash
+docker stop bobcat-ui-application
+docker rm bobcat-ui-application
+docker build -t bobcat-ui-application .
+docker run -d --name bobcat-ui-application -p 8964:8964 -p 3000:3000 bobcat-ui-application
+```
+
 
 ## Usage
 
