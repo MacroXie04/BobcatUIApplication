@@ -10,7 +10,7 @@ jobs:
   build:
     strategy:
       matrix:
-        os: [ debian-latest ]
+        os: [ ubuntu-latest ]
 
     runs-on: ${{ matrix.os }}
 
@@ -21,14 +21,14 @@ jobs:
       - name: Install dependencies
         shell: bash
         run: |
-          if [[ "$RUNNER_OS" == "debian" ]]; then
+          if [[ "$RUNNER_OS" == "Linux" ]]; then
             sudo apt-get update
             sudo apt-get install -y build-essential fltk1.3-dev libglu1-mesa-dev libgl1-mesa-dev xvfb
-      - name: Build project
+      - name: Build project using Makefile
         run: make
 
       - name: Run app test (SteamPlug)
-        if: runner.os == 'debian'
+        if: runner.os == 'Linux'
         run: |
           set -e
           xvfb-run timeout 5s make run | tee run_output.log
