@@ -139,14 +139,14 @@ void Canvas::render() {
         float u = 2.0f * p.getSize() / hpx;
 
         switch (p.getTool()) {
-            case PERSON: {
+            case PHOTO: {
                 static GLuint tex = 0;
                 static int texW = 0, texH = 0;
                 if (tex == 0) {
                     int channels;
                     stbi_set_flip_vertically_on_load(1);          // 依旧先上下翻一次
                     unsigned char* data =
-                        stbi_load("assets/person.png", &texW, &texH, &channels, STBI_rgb_alpha);
+                        stbi_load("assets/photo.png", &texW, &texH, &channels, STBI_rgb_alpha);
                     if (!data) { std::cerr << "image load failed\n"; break; }
 
                     glGenTextures(1, &tex);

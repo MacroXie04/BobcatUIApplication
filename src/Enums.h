@@ -13,7 +13,7 @@ enum TOOL {
     RECTANGLE,
     POLYGON,
 
-    PERSON,
+    PHOTO,
 };
 
 enum ACTION {
