@@ -21,6 +21,9 @@ class Toolbar : public bobcat::Group {
     bobcat::Image *bringToFrontButton;
 
     //
+    bobcat::Image *personButton;
+
+    //
     bobcat::Image *clearButton;
 
     TOOL tool;

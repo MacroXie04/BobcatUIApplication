@@ -12,6 +12,8 @@ enum TOOL {
     TRIANGLE,
     RECTANGLE,
     POLYGON,
+
+    PERSON,
 };
 
 enum ACTION {

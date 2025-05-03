@@ -15,6 +15,7 @@ void Toolbar::visualizeSelectedTool() {
     triangleButton->color(FL_BACKGROUND_COLOR);
     rectangleButton->color(FL_BACKGROUND_COLOR);
     polygonButton->color(FL_BACKGROUND_COLOR);
+    personButton->color(FL_BACKGROUND_COLOR);
 
     sendToBackButton->color(FL_BACKGROUND_COLOR);
     bringToFrontButton->color(FL_BACKGROUND_COLOR);
@@ -37,6 +38,8 @@ void Toolbar::visualizeSelectedTool() {
         rectangleButton->color(FL_WHITE);
     } else if (tool == POLYGON) {
         polygonButton->color(FL_WHITE);
+    } else if (tool == PERSON) {
+        personButton->color(FL_WHITE);
     }
 }
 
@@ -73,6 +76,9 @@ void Toolbar::onClick(bobcat::Widget *sender) {
     } else if (sender == bringToFrontButton) {
         action = BRING_TO_FRONT;
         if (DEBUG) std::cout << "[Toolbar] Action selected: BRING_TO_FRONT" << std::endl;
+    } else if (sender == personButton) {
+        tool = PERSON;
+        if (DEBUG) std::cout << "[Toolbar] Tool selected: PERSON" << std::endl;
     }
 
     visualizeSelectedTool();
@@ -97,6 +103,9 @@ Toolbar::Toolbar(int x, int y, int w, int h) : Group(x, y, w, h) {
     polygonButton = new Image(x, yOffset += spacing, btnWidth, btnHeight, "./assets/polygon.png");
 
     //
+    personButton = new Image(x, yOffset += spacing, btnWidth, btnHeight, "./assets/person.png");
+
+    //
     sendToBackButton = new Image(x, yOffset += spacing, btnWidth, btnHeight, "./assets/send-to-back.png");
     bringToFrontButton = new Image(x, yOffset += spacing, btnWidth, btnHeight, "./assets/bring-to-front.png");
 
@@ -114,6 +123,7 @@ Toolbar::Toolbar(int x, int y, int w, int h) : Group(x, y, w, h) {
     triangleButton->box(FL_BORDER_BOX);
     rectangleButton->box(FL_BORDER_BOX);
     polygonButton->box(FL_BORDER_BOX);
+    personButton->box(FL_BORDER_BOX);
 
     sendToBackButton->box(FL_BORDER_BOX);
     bringToFrontButton->box(FL_BORDER_BOX);
@@ -132,6 +142,7 @@ Toolbar::Toolbar(int x, int y, int w, int h) : Group(x, y, w, h) {
     ON_CLICK(clearButton, Toolbar::onClick);
     ON_CLICK(sendToBackButton, Toolbar::onClick);
     ON_CLICK(bringToFrontButton, Toolbar::onClick);
+    ON_CLICK(personButton, Toolbar::onClick);
 }
 
 TOOL Toolbar::getTool() const {

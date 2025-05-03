@@ -95,7 +95,7 @@ void Application::onToolbarChange(bobcat::Widget *) {
         return;
     }
 
-    // handle the send to back and bring to front actions
+    // handle the send-to-back and bring-to-front actions
     if (!canvas->hasSelected()) {
         return;
     }
@@ -124,11 +124,16 @@ void Application::onColorChange(bobcat::Widget *) {
 
 Application::Application() {
     // initialize the application and size of each window
-    window = new bobcat::Window(20, 20, 700, 520, "Programming Project");
-    toolbar = new Toolbar(0, 0, 50, 600);
-    canvas = new Canvas(50, 0, 650, 450);
-    colorSelector = new ColorSelector(50, 450, 440, 70);
-    sizeSelector = new SizeSelector(490, 450, 210, 70);
+    int winWidth = 1147;
+    int winHeight = 745;
+    int toolbarWidth = 50;
+    int selectorHeight = 70;
+
+    window = new bobcat::Window(20, 20, winWidth, winHeight, "Programming Project");
+    toolbar = new Toolbar(0, 0, toolbarWidth, winHeight);
+    canvas = new Canvas(toolbarWidth, 0, winWidth - toolbarWidth, winHeight - selectorHeight);
+    colorSelector = new ColorSelector(toolbarWidth, winHeight - selectorHeight, (winWidth - toolbarWidth) * 2 / 3, selectorHeight);
+    sizeSelector = new SizeSelector(toolbarWidth + (winWidth - toolbarWidth) * 2 / 3, winHeight - selectorHeight, (winWidth - toolbarWidth) / 3, selectorHeight);
     colorSelector->box(FL_BORDER_BOX);
 
     // add the widgets to the window

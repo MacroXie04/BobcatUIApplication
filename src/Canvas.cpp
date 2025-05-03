@@ -1,5 +1,7 @@
 #include "Canvas.h"
 #include <cmath>
+#include "stb_image.h"
+
 
 Canvas::Canvas(int x, int y, int w, int h): Canvas_(x, y, w, h) {
     active = -1;
@@ -134,18 +136,63 @@ void Canvas::render() {
     for (size_t idx = 0; idx < prints.size(); ++idx) {
         auto &p = prints[idx];
 
-        glColor3f(p.getR(), p.getG(), p.getB());
         float u = 2.0f * p.getSize() / hpx;
 
         switch (p.getTool()) {
+            case PERSON: {
+                static GLuint tex = 0;
+                static int texW = 0, texH = 0;
+                if (tex == 0) {
+                    int channels;
+                    stbi_set_flip_vertically_on_load(1);          // 依旧先上下翻一次
+                    unsigned char* data =
+                        stbi_load("assets/person.png", &texW, &texH, &channels, STBI_rgb_alpha);
+                    if (!data) { std::cerr << "image load failed\n"; break; }
+
+                    glGenTextures(1, &tex);
+                    glBindTexture(GL_TEXTURE_2D, tex);
+                    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+                    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+                    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, texW, texH, 0,
+                                 GL_RGBA, GL_UNSIGNED_BYTE, data);
+                    stbi_image_free(data);
+                }
+
+                glEnable(GL_BLEND);
+                glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+                auto c = p.getPoint(0);
+                float halfW = 2.0f * p.getSize() / hpx;
+                float ratio = static_cast<float>(texH) / texW;
+                float halfH = halfW * ratio * aspect;
+
+                glColor3f(1.0f, 1.0f, 1.0f);
+                glEnable(GL_TEXTURE_2D);
+                glBindTexture(GL_TEXTURE_2D, tex);
+
+                glBegin(GL_QUADS);                 // ← s,t 坐标恢复正常顺序
+                glTexCoord2f(0.f, 0.f); glVertex2f(c.x - halfW, c.y - halfH); // 左下
+                glTexCoord2f(1.f, 0.f); glVertex2f(c.x + halfW, c.y - halfH); // 右下
+                glTexCoord2f(1.f, 1.f); glVertex2f(c.x + halfW, c.y + halfH); // 右上
+                glTexCoord2f(0.f, 1.f); glVertex2f(c.x - halfW, c.y + halfH); // 左上
+                glEnd();
+
+                glDisable(GL_TEXTURE_2D);
+                break;
+            }
+
+
+
             case PENCIL:
+                glColor3f(p.getR(), p.getG(), p.getB());
                 glLineWidth(p.getSize());
                 glBegin(GL_LINE_STRIP);
-                for (auto &pt : p.getPoints()) glVertex2f(pt.x, pt.y);
+                for (auto &pt: p.getPoints()) glVertex2f(pt.x, pt.y);
                 glEnd();
                 break;
 
             case CIRCLE: {
+                glColor3f(p.getR(), p.getG(), p.getB());
                 auto c = p.getPoint(0);
                 glBegin(GL_POLYGON);
                 for (int i = 0; i < 64; ++i) {
@@ -157,6 +204,7 @@ void Canvas::render() {
             }
 
             case RECTANGLE: {
+                glColor3f(p.getR(), p.getG(), p.getB());
                 auto c = p.getPoint(0);
                 glBegin(GL_POLYGON);
                 glVertex2f(c.x - u, c.y - u * aspect);
@@ -168,9 +216,10 @@ void Canvas::render() {
             }
 
             case TRIANGLE: {
+                glColor3f(p.getR(), p.getG(), p.getB());
                 auto c = p.getPoint(0);
                 glBegin(GL_POLYGON);
-                glVertex2f(c.x,     c.y + u * aspect);
+                glVertex2f(c.x, c.y + u * aspect);
                 glVertex2f(c.x - u, c.y - u * aspect);
                 glVertex2f(c.x + u, c.y - u * aspect);
                 glEnd();
@@ -178,6 +227,7 @@ void Canvas::render() {
             }
 
             case POLYGON: {
+                glColor3f(p.getR(), p.getG(), p.getB());
                 auto c = p.getPoint(0);
                 glBegin(GL_POLYGON);
                 for (int i = 0; i < 5; ++i) {
@@ -197,7 +247,7 @@ void Canvas::render() {
 
             if (p.getTool() == PENCIL) {
                 float minx = 1e9f, maxx = -1e9f, miny = 1e9f, maxy = -1e9f;
-                for (auto &pt : p.getPoints()) {
+                for (auto &pt: p.getPoints()) {
                     if (pt.x < minx) minx = pt.x;
                     if (pt.x > maxx) maxx = pt.x;
                     if (pt.y < miny) miny = pt.y;
