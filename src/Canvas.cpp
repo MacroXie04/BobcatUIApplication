@@ -1,6 +1,7 @@
 #include "Canvas.h"
 #include <cmath>
-#include "stb_image.h"
+#include "../bobcat_ui/stb_image.h"
+// #include "texture.h"
 
 
 Canvas::Canvas(int x, int y, int w, int h): Canvas_(x, y, w, h) {
@@ -52,7 +53,6 @@ void Canvas::setLastPointActive(float x, float y) {
     }
 }
 
-// === Canvas.cpp ===
 bool Canvas::selectAt(float x, float y) {
     int hp = h();
     // iterate from topmost (last‐drawn) backwards
@@ -140,48 +140,11 @@ void Canvas::render() {
 
         switch (p.getTool()) {
             case PHOTO: {
-                static GLuint tex = 0;
-                static int texW = 0, texH = 0;
-                if (tex == 0) {
-                    int channels;
-                    stbi_set_flip_vertically_on_load(1);          // 依旧先上下翻一次
-                    unsigned char* data =
-                        stbi_load("assets/photo.png", &texW, &texH, &channels, STBI_rgb_alpha);
-                    if (!data) { std::cerr << "image load failed\n"; break; }
-
-                    glGenTextures(1, &tex);
-                    glBindTexture(GL_TEXTURE_2D, tex);
-                    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-                    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-                    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, texW, texH, 0,
-                                 GL_RGBA, GL_UNSIGNED_BYTE, data);
-                    stbi_image_free(data);
-                }
-
-                glEnable(GL_BLEND);
-                glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
+                static bobcat::Texture photo("assets/photo.png");
                 auto c = p.getPoint(0);
-                float halfW = 2.0f * p.getSize() / hpx;
-                float ratio = static_cast<float>(texH) / texW;
-                float halfH = halfW * ratio * aspect;
-
-                glColor3f(1.0f, 1.0f, 1.0f);
-                glEnable(GL_TEXTURE_2D);
-                glBindTexture(GL_TEXTURE_2D, tex);
-
-                glBegin(GL_QUADS);                 // ← s,t 坐标恢复正常顺序
-                glTexCoord2f(0.f, 0.f); glVertex2f(c.x - halfW, c.y - halfH); // 左下
-                glTexCoord2f(1.f, 0.f); glVertex2f(c.x + halfW, c.y - halfH); // 右下
-                glTexCoord2f(1.f, 1.f); glVertex2f(c.x + halfW, c.y + halfH); // 右上
-                glTexCoord2f(0.f, 1.f); glVertex2f(c.x - halfW, c.y + halfH); // 左上
-                glEnd();
-
-                glDisable(GL_TEXTURE_2D);
+                photo.draw(c.x,c.y,p.getSize(),hpx,aspect);
                 break;
             }
-
-
 
             case PENCIL:
                 glColor3f(p.getR(), p.getG(), p.getB());

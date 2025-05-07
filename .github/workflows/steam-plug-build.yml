@@ -1,4 +1,4 @@
-name: steam plug environment build
+name: Steamplug environment build
 
 on:
   push:

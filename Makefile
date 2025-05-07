@@ -1,11 +1,12 @@
 # ========================================================================================= #
-#  Bobcat UI Application Makefile       														#
+#  Bobcat UI Application Makefile       													#
 #  Hongzhe Xie                      														#
 #  University of California, Merced    												   		#
 # ========================================================================================= #
 
 # ===================================== PROJECT CONFIG ==================================== #
 SRC_DIR      := src
+UI_DIR       := bobcat_ui
 TEST_DIR     := test
 OBJ_DIR      := objects
 LOCAL_BIN    := bin
@@ -13,7 +14,7 @@ APP          := app
 MAIN         := main
 TEST         := test
 HEADERS      := $(wildcard $(SRC_DIR)/*.h)
-SRC          := $(wildcard $(SRC_DIR)/*.cpp)
+SRCS = src/Application.cpp src/Other.cpp bobcat_ui/texture.cpp
 OBJ          := $(SRC:$(SRC_DIR)/%.cpp=$(OBJ_DIR)/%.o)
 TEST_SRC     := $(wildcard $(TEST_DIR)/*.cpp)
 TEST_OBJ     := $(TEST_SRC:$(TEST_DIR)/%.cpp=$(OBJ_DIR)/%.o)
@@ -50,6 +51,9 @@ $(OUT): $(OBJ) | $(OBJ_DIR) $(LOCAL_BIN_DIR)
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp | $(OBJ_DIR)
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
+$(OBJ_DIR)/%.o: $(UI_DIR)/%.cpp | $(OBJ_DIR)
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
 $(OBJ_DIR):
 	mkdir -p $(OBJ_DIR)
 
@@ -59,16 +63,6 @@ $(LOCAL_BIN_DIR):
 run: all
 	@if [ -n "$$TERM" ]; then clear; fi
 	@$(LOCAL_BIN_DIR)/$(APP)
-
-test: $(OBJ) $(TEST_OBJ) | $(BIN_DIR) $(LOCAL_BIN_DIR)
-	$(CXX) $(filter-out $(OBJ_DIR)/$(MAIN).o,$(OBJ)) $(TEST_OBJ) -o $(TEST_OUT) $(LDFLAGS)
-	rm -f $(LOCAL_BIN_DIR)/$(TEST)
-	ln -s $(TEST_OUT) $(LOCAL_BIN_DIR)/$(TEST)
-	clear
-	$(LOCAL_BIN_DIR)/$(TEST) --output=color || true
-
-autograde: clean test
-	xvfb-run $(LOCAL_BIN_DIR)/$(TEST) || true
 
 $(OBJ_DIR)/$(TEST).o: $(TEST_DIR)/$(TEST).cpp | $(OBJ_DIR)
 	$(CXX) $(CXXFLAGS) -c $< -o $@

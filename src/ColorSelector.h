@@ -1,8 +1,13 @@
 #ifndef COLOR_SELECTOR_H
 #define COLOR_SELECTOR_H
-#include "../bobcat_ui/all.h"
+#if defined(__APPLE__)
+    #include "../bobcat_ui/all.h"
+#else
+    #include <bobcat_ui/all.h>
+#endif
 #include "Enums.h"
 #include <tuple>
+
 #include <algorithm>
 
 class ColorSelector : public bobcat::Group {

@@ -1,7 +1,11 @@
 #ifndef CANVAS_H
 #define CANVAS_H
 
-#include "../bobcat_ui/all.h"
+#if defined(__APPLE__)
+    #include "../bobcat_ui/all.h"
+#else
+    #include <bobcat_ui/all.h>
+#endif
 #include <vector>
 #include "Print_obj.h"
 

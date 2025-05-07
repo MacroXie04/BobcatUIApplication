@@ -21,5 +21,6 @@
 
 // slider.h create by Hongzhe Xie
 #include "slider.h"
+#include "texture.h"
 
 #endif

@@ -1,7 +1,12 @@
 #ifndef APPLICATION_H
 #define APPLICATION_H
 
-#include "../bobcat_ui/all.h"
+#if defined(__APPLE__)
+    #include "../bobcat_ui/all.h"
+#else
+    #include <bobcat_ui/all.h>
+#endif
+
 #include "Toolbar.h"
 #include "Canvas.h"
 #include "ColorSelector.h"
