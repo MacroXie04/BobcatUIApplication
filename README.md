@@ -11,19 +11,19 @@ This project was created to demonstrate interactive GUI programming, object-orie
 
 ## Features and Scoring
 
-| Feature                                                                               | Points |
-|---------------------------------------------------------------------------------------|--------|
-| Paint Brush Tool — draw freeform scribbles (one drag = one object)                    | 10     |
-| Eraser Tool — delete selected shape or scribble                                       | 5      |
-| Clear Screen Tool — delete all shapes and scribbles                                   | 5      |
-| RGB Color Picker — choose custom colors                                               | 10     |
-| Four Shape Tools — e.g., Rectangle, Circle, Line, Triangle                            | 10     |
-| Selector Tool — click to select any shape or scribble                                 | 10     |
-| Resize Tool — resize selected object interactively                                    | 10     |
-| Color Change — change color of selected shape or scribble                             | 10     |
-| Move Tool — drag to reposition selected shape or scribble                             | 10     |
-| Bring to Front — reorder selected object to the front                                 | 10     |
-| Send to Back — reorder selected object to the back                                    | 10     |
+| Feature                                                                                                                | Points |
+|------------------------------------------------------------------------------------------------------------------------|--------|
+| Paint Brush Tool — draw freeform scribbles (one drag = one object)                                                     | 10     |
+| Eraser Tool — delete selected shape or scribble                                                                        | 5      |
+| Clear Screen Tool — delete all shapes and scribbles                                                                    | 5      |
+| RGB Color Picker — choose custom colors                                                                                | 10     |
+| Four Shape Tools — e.g., Rectangle, Circle, Line, Triangle                                                             | 10     |
+| Selector Tool — click to select any shape or scribble                                                                  | 10     |
+| Resize Tool — resize selected object interactively                                                                     | 10     |
+| Color Change — change color of selected shape or scribble                                                              | 10     |
+| Move Tool — drag to reposition selected shape or scribble                                                              | 10     |
+| Bring to Front — reorder selected object to the front                                                                  | 10     |
+| Send to Back — reorder selected object to the back                                                                     | 10     |
 
 **Total: 100 Points**
 
@@ -55,7 +55,7 @@ struct PrintObj {
 ## Build Instructions (Docker image)
 
 > Based on the change of the **Bobcat UI Library**, the **Bobcat UI Application** is not running on the **Steam Plug**.
-> The **Bobcat UI Application** is running **only** on the **Docker** container.
+> The **Bobcat UI Application** is running **only** on the **Docker** container or include the Bobcat UI Library in the project.
 
 ### Prerequisites
 
